@@ -28,7 +28,6 @@ if (project.hasProperty('secretFile')) {
 }
 
 version = "${mod_version}" + getBuildNumber()
-group = "${mod_group}"
 archivesBaseName = "${mod_name}-${version_minecraft}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
