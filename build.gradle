@@ -46,10 +46,10 @@ minecraft {
         client {
 		
             workingDirectory project.file('run')
-			taskName "${mod_name} Client"
+			taskName "${mod_name}".replaceAll("\\s","") + 'Client'
 
             mods {
-                attributefix {
+                gamestages {
                     source sourceSets.main
                 }
             }
@@ -57,10 +57,10 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-			taskName "${mod_name} Server"
+			taskName "${mod_name}".replaceAll("\\s","") + 'Server'
 			
             mods {
-                attributefix {
+                gamestages {
                     source sourceSets.main
                 }
             }
