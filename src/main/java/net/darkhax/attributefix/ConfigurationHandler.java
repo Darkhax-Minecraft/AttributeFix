@@ -22,7 +22,7 @@ public class ConfigurationHandler {
 
     private static final IAttribute[] ATTRIBUTES = new IAttribute[] { MAX_HEALTH, FOLLOW_RANGE, KNOCKBACK_RESISTANCE, MOVEMENT_SPEED, FLYING_SPEED, ATTACK_DAMAGE, ATTACK_SPEED, ARMOR, ARMOR_TOUGHNESS, LUCK };
 
-	private final Map<RangedAttribute, AttributeData> attributes = new HashMap<>();
+	private final Map<RangedAttribute, AttributeData> attributeValues = new HashMap<>();
 	private final ForgeConfigSpec spec;
 	
 	public ConfigurationHandler () {
@@ -34,7 +34,7 @@ public class ConfigurationHandler {
 			if (attribute instanceof RangedAttribute) {
 				
 				RangedAttribute rangedAttribute = (RangedAttribute) attribute;
-				attributes.put(rangedAttribute, new AttributeData(rangedAttribute, builder));
+				attributeValues.put(rangedAttribute, new AttributeData(rangedAttribute, builder));
 			}
 		}
 		
@@ -53,7 +53,7 @@ public class ConfigurationHandler {
 			if (attribute instanceof RangedAttribute) {
 				
 				RangedAttribute rangedAttribute = (RangedAttribute) attribute;
-				AttributeData data = attributes.get(rangedAttribute);
+				AttributeData data = attributeValues.get(rangedAttribute);
 				
 				rangedAttribute.minimumValue = data.min.get();
 				rangedAttribute.maximumValue = data.max.get();
