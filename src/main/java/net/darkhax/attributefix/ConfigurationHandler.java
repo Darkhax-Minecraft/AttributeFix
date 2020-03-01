@@ -72,7 +72,7 @@ public class ConfigurationHandler {
     		
     		builder.comment("Values for the " + group + " attribute.");
     		builder.push(group);
-    		min = builder.defineInRange("min", attribute.minimumValue, Double.MIN_VALUE, Double.MAX_VALUE);
+    		min = builder.defineInRange("min", attribute.minimumValue, attribute.minimumValue, Double.MAX_VALUE);
     		max = builder.defineInRange("max", Math.max(-65536d, 65536d), Double.MIN_VALUE, Double.MAX_VALUE);
     		
     		builder.pop();
