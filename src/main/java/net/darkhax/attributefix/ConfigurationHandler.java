@@ -55,7 +55,6 @@ public class ConfigurationHandler {
 				RangedAttribute rangedAttribute = (RangedAttribute) attribute;
 				AttributeData data = attributeValues.get(rangedAttribute);
 				
-				rangedAttribute.minimumValue = data.min.get();
 				rangedAttribute.maximumValue = data.max.get();
 			}
 		}
@@ -63,7 +62,6 @@ public class ConfigurationHandler {
 	
     private class AttributeData {
     	
-    	private final ForgeConfigSpec.DoubleValue min;
     	private final ForgeConfigSpec.DoubleValue max;
     	
     	public AttributeData(RangedAttribute attribute, ForgeConfigSpec.Builder builder) {
@@ -72,7 +70,6 @@ public class ConfigurationHandler {
     		
     		builder.comment("Values for the " + group + " attribute.");
     		builder.push(group);
-    		min = builder.defineInRange("min", attribute.minimumValue, attribute.minimumValue, Double.MAX_VALUE);
     		max = builder.defineInRange("max", Math.max(-65536d, 65536d), Double.MIN_VALUE, Double.MAX_VALUE);
     		
     		builder.pop();
