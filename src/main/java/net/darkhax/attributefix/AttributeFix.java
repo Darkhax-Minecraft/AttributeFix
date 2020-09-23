@@ -1,25 +1,24 @@
 package net.darkhax.attributefix;
 
-import net.minecraftforge.fml.ModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod("attributefix")
+@EventBusSubscriber(modid="attributefix", bus=EventBusSubscriber.Bus.MOD)
 public class AttributeFix {
+    
+	public static final Logger LOG = LogManager.getLogger("Attribute Fix");
 	
-    private final ConfigurationHandler config;
-    
-    public AttributeFix () {
-    	
-    	this.config = new ConfigurationHandler();
-    	ModLoadingContext.get().registerConfig(Type.COMMON, config.getSpec());
-    	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-    }
-    
-    private void setup (FMLCommonSetupEvent event) {
+    @SubscribeEvent
+    public static void setup (FMLCommonSetupEvent event) {
 
-    	this.config.applyChanges();
+    	ConfigHandler config = new ConfigHandler();
+    	config.save();
+    	config.applyChanges();
     }
 }
