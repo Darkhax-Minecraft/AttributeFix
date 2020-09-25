@@ -9,16 +9,16 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod("attributefix")
-@EventBusSubscriber(modid="attributefix", bus=EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = "attributefix", bus = EventBusSubscriber.Bus.MOD)
 public class AttributeFix {
     
-	public static final Logger LOG = LogManager.getLogger("Attribute Fix");
-	
+    public static final Logger LOG = LogManager.getLogger("Attribute Fix");
+    
     @SubscribeEvent
     public static void setup (FMLCommonSetupEvent event) {
-
-    	ConfigHandler config = new ConfigHandler();
-    	config.save();
-    	config.applyChanges();
+        
+        final ConfigHandler config = new ConfigHandler();
+        config.save();
+        config.applyChanges();
     }
 }
