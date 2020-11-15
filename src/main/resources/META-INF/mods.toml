@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[35,)"
 issueTrackerURL="https://github.com/Darkhax-Minecraft/AttributeFix/issues"
 license="LGPL v2.1"
 
 [[mods]]
 modId="attributefix"
-updateJSONURL="https://updates.blamejared.com/get?n=attributefix&gv=1.16.3"
+updateJSONURL="https://updates.blamejared.com/get?n=attributefix&gv=1.16.4"
 version="${version}"
 displayName="${mod_name}"
 displayURL="${mod_download}"
@@ -18,13 +18,13 @@ ${mod_description}
 [[dependencies.attributefix]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[35,)"
     ordering="NONE"
     side="SERVER"
 
 [[dependencies.attributefix]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3]"
+    versionRange="[1.16.4]"
     ordering="NONE"
     side="SERVER"
