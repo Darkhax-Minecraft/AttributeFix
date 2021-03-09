@@ -1,27 +1,19 @@
 package net.darkhax.attributefix;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.electronwill.nightconfig.core.CommentedConfig;
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Type;
-import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ConfigHandler {
     
+    public static final DecimalFormat FORMAT = new DecimalFormat("#.##");
     private final Map<RangedAttribute, AttributeData> attributes = new HashMap<>();
     private final ForgeConfigSpec spec;
     
@@ -47,24 +39,6 @@ public class ConfigHandler {
         this.spec = builder.build();
     }
     
-    public void save () {
-        
-        final ModConfig modConfig = new ModConfig(Type.COMMON, this.spec, ModLoadingContext.get().getActiveContainer());
-        final CommentedFileConfig configData = modConfig.getHandler().reader(FMLPaths.CONFIGDIR.relative()).apply(modConfig);
-        final Method setConfigDataMethod = ObfuscationReflectionHelper.findMethod(ModConfig.class, "setConfigData", CommentedConfig.class);
-        
-        try {
-            setConfigDataMethod.invoke(modConfig, configData);
-        }
-        
-        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            AttributeFix.LOG.error("Forge's config code could not be accessed.", e);
-            throw new IllegalStateException(e);
-        }
-        
-        modConfig.save();
-    }
-    
     public ForgeConfigSpec getSpec () {
         
         return this.spec;
@@ -79,9 +53,9 @@ public class ConfigHandler {
             
             if (data.enabled.get()) {
                 
+                AttributeFix.LOG.debug("Changing range for {} from {}-{} to {}-{}", ranged.getRegistryName(), FORMAT.format(ranged.minimumValue), FORMAT.format(ranged.maximumValue), FORMAT.format(data.min.get()), FORMAT.format(data.max.get()));
                 ranged.minimumValue = data.min.get();
                 ranged.maximumValue = data.max.get();
-                AttributeFix.LOG.debug("Changing range for {} from {}-{} to {}-{}", ranged.getRegistryName(), ranged.minimumValue, ranged.maximumValue, data.min, data.max);
             }
             
             else {
