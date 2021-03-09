@@ -83,10 +83,10 @@ public class ConfigHandler {
             this.enabled = builder.define("enabled", true);
             
             builder.comment("The minimum vallue for the attribute. Changing this may have unforseen consequences.");
-            this.min = builder.defineInRange("min", attribute.minimumValue, Double.MIN_VALUE, Double.MAX_VALUE);
+            this.min = builder.defineInRange("min", attribute.minimumValue, -Double.MAX_VALUE, Double.MAX_VALUE);
             
             builder.comment("The maximum value for the attribute.");
-            this.max = builder.defineInRange("max", Math.max(attribute.maximumValue, 65536d), Double.MIN_VALUE, Double.MAX_VALUE);
+            this.max = builder.defineInRange("max", Math.max(attribute.maximumValue, 65536d), -Double.MAX_VALUE, Double.MAX_VALUE);
             
             builder.pop();
         }
