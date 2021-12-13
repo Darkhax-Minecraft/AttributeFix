@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -53,9 +53,9 @@ public class ConfigHandler {
             
             if (data.enabled.get()) {
                 
-                AttributeFix.LOG.debug("Changing range for {} from {}-{} to {}-{}", ranged.getRegistryName(), FORMAT.format(ranged.minimumValue), FORMAT.format(ranged.maximumValue), FORMAT.format(data.min.get()), FORMAT.format(data.max.get()));
-                ranged.minimumValue = data.min.get();
-                ranged.maximumValue = data.max.get();
+                AttributeFix.LOG.debug("Changing range for {} from {}-{} to {}-{}", ranged.getRegistryName(), FORMAT.format(ranged.minValue), FORMAT.format(ranged.maxValue), FORMAT.format(data.min.get()), FORMAT.format(data.max.get()));
+                ranged.minValue = data.min.get();
+                ranged.maxValue = data.max.get();
             }
             
             else {
@@ -83,10 +83,10 @@ public class ConfigHandler {
             this.enabled = builder.define("enabled", true);
             
             builder.comment("The minimum vallue for the attribute. Changing this may have unforseen consequences.");
-            this.min = builder.defineInRange("min", attribute.minimumValue, -Double.MAX_VALUE, Double.MAX_VALUE);
+            this.min = builder.defineInRange("min", attribute.minValue, -Double.MAX_VALUE, Double.MAX_VALUE);
             
             builder.comment("The maximum value for the attribute.");
-            this.max = builder.defineInRange("max", Math.max(attribute.maximumValue, 65536d), -Double.MAX_VALUE, Double.MAX_VALUE);
+            this.max = builder.defineInRange("max", Math.max(attribute.maxValue, 65536d), -Double.MAX_VALUE, Double.MAX_VALUE);
             
             builder.pop();
         }

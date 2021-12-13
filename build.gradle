@@ -2,11 +2,10 @@ buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url 'https://plugins.gradle.org/m2/' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
         classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.1.0'
     }
@@ -22,6 +21,7 @@ apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Co
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/artifacts.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven_local_nomcp.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 if (project.hasProperty('secretFile')) {
     loadSecrets(new File((String) findProperty('secretFile')))
@@ -37,14 +37,13 @@ import com.diluv.schoomp.message.embed.Footer
 version = "${mod_version}" + getBuildNumber()
 archivesBaseName = "${mod_name}-${minecraft_version}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17'
 
 minecraft {
 
-    mappings channel: 'snapshot', version: "${mcp_version}".toString()
+    mappings channel: "${mcp_channel}", version: "${mcp_version}".toString()
 	
     if (project.hasProperty('mod_at')) {
-    
         accessTransformer = file(findProperty('mod_at'))
     }
 	
@@ -88,7 +87,7 @@ jar {
             'Timestamp': System.currentTimeMillis(),
             'Specification-Title': "${mod_name}",
             'Specification-Vendor': "${mod_vendor}",
-            'Specification-Version': "${version}",
+            'Specification-Version': "${project.version}",
             'Implementation-Title': project.archivesBaseName,
             'Implementation-Version': project.version,
             'Implementation-Vendor' :"${mod_vendor}",
@@ -105,32 +104,35 @@ String getBuildNumber() {
 }
 
 processResources {
+    exclude 'META-INF/mods.toml'
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
+    def credits = "Thanks to my supporters on Patreon. "
+    def patreonSupporters = new ArrayList<String>()
 
-        def credits = "Thanks to my supporters on Patreon. "
+    for (entry in getPledges()) {
 
-        def patreonSupporters = new ArrayList<String>()
+        def pledge = entry.getValue();
 
-        for (entry in getPledges()) {
-
-            def pledge = entry.getValue();
-
-            if (pledge.isValid()) {
-
-                patreonSupporters.add(pledge.getDisplayName())
-            }
+        if (pledge.isValid()) {
+            patreonSupporters.add(pledge.getDisplayName())
         }
-
-        credits += patreonSupporters.join(', ')
-
-        expand 'version': project.version, 'mod_name': mod_name, 'mod_download': mod_download, 'mod_credits': credits, 'mod_authors': mod_authors, 'mod_description': mod_description
     }
 
-    from(sourceSets.main.resources.srcDirs) {
-    
-        exclude 'META-INF/mods.toml'
+    credits += patreonSupporters.join(', ')
+
+    // Copy mods.tml with variable substitutions
+    copy {
+        outputs.upToDateWhen { false }
+        from(sourceSets.main.resources) {
+            include 'META-INF/mods.toml'
+            expand 'version': project.version,
+                    'mod_name': mod_name,
+                    'mod_download': mod_download,
+                    'mod_credits': credits,
+                    'mod_authors': mod_authors,
+                    'mod_description': mod_description
+        }
+        into processResources.destinationDir
     }
 }
 
@@ -239,33 +241,3 @@ task updateVersionTracker {
         println "VersionCheck Response: ${req.getInputStream().getText()}"
     }
 }
-
-// Jar Signing
-import net.minecraftforge.gradle.common.task.SignJar
-
-task signJar(type: SignJar, dependsOn: jar) {
-
-    onlyIf {
-    
-        project.hasProperty('keyStore')
-    }
-    
-    if (project.hasProperty('keyStore')) {
-    
-        project.logger.info('Signing jar ' + jar.archivePath.getName());
-    
-        keyStore = project.findProperty('keyStore')
-        alias = project.findProperty('keyStoreAlias')
-        storePass = project.findProperty('keyStorePass')
-        keyPass = project.findProperty('keyStoreKeyPass')
-        inputFile = jar.archivePath
-        outputFile = jar.archivePath
-    }
-
-    else {
-    
-        project.logger.warn('Could not sign ' + jar.archivePath.getName() + '. No keyStore property could be found')
-    }
-}
-
-build.dependsOn signJar
