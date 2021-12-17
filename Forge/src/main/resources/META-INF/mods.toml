@@ -1,0 +1,15 @@
+modLoader="javafml"
+loaderVersion="[37,)"
+license="${mod_license}"
+issueTrackerURL="${mod_issues}"
+
+[[mods]]
+modId="${mod_id}"
+version="${file.jarVersion}"
+displayName="${mod_name}"
+displayURL="${mod_homepage}"
+credits="This project is made possible with Patreon support from players like you. Thank you! ${mod_supporters}"
+authors="${mod_author}"
+description='''
+${mod_description}
+'''
