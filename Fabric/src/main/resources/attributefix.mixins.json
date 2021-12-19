@@ -4,8 +4,6 @@
     "package": "net.darkhax.attributefix.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-    ],
-    "client": [
       "AccessorRangedAttribute"
     ],
     "injectors": {
