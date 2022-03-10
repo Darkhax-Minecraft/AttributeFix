@@ -114,7 +114,7 @@ public class AttributeConfig {
             catch (IOException e) {
 
                 Constants.LOG.error("Could not read config file {}. Defaults will be used.", configFile.getAbsolutePath());
-                Constants.LOG.catching(e);
+                Constants.LOG.trace("Failed to read config file.", e);
             }
         }
 
@@ -133,7 +133,7 @@ public class AttributeConfig {
         catch (IOException e) {
 
             Constants.LOG.error("Could not write config file '{}'!", configFile.getAbsolutePath());
-            Constants.LOG.catching(e);
+            Constants.LOG.trace("Failed to read config file.", e);
         }
 
 
