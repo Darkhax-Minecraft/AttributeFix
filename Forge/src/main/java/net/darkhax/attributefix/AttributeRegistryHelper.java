@@ -19,7 +19,7 @@ public class AttributeRegistryHelper implements RegistryHelper<Attribute> {
     @Override
     public ResourceLocation getId(Attribute value) {
 
-        return value.getRegistryName();
+        return ForgeRegistries.ATTRIBUTES.getKey(value);
     }
 
     @Override
