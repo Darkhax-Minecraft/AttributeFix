@@ -2,6 +2,7 @@ package net.darkhax.attributefix;
 
 import net.darkhax.attributefix.temp.RegistryHelper;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 
@@ -12,13 +13,13 @@ public class AttributeRegistryHelper implements RegistryHelper<Attribute> {
     @Override
     public Attribute get(ResourceLocation id) {
 
-        return Registry.ATTRIBUTE.get(id);
+        return BuiltInRegistries.ATTRIBUTE.get(id);
     }
 
     @Override
     public ResourceLocation getId(Attribute value) {
 
-        return Registry.ATTRIBUTE.getKey(value);
+        return BuiltInRegistries.ATTRIBUTE.getKey(value);
     }
 
     @Override
@@ -30,12 +31,12 @@ public class AttributeRegistryHelper implements RegistryHelper<Attribute> {
     @Override
     public boolean exists(ResourceLocation id) {
 
-        return Registry.ATTRIBUTE.containsKey(id);
+        return BuiltInRegistries.ATTRIBUTE.containsKey(id);
     }
 
     @Override
     public Collection<Attribute> getValues() {
 
-        return Registry.ATTRIBUTE.stream().toList();
+        return BuiltInRegistries.ATTRIBUTE.stream().toList();
     }
 }
