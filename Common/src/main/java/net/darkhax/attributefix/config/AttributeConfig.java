@@ -160,7 +160,7 @@ public class AttributeConfig {
 
         public boolean isEnabled() {
 
-            return this.isEnabled();
+            return this.enabled;
         }
     }
 
