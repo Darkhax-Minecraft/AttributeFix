@@ -29,7 +29,7 @@ public class AttributeConfig {
 
             final ResourceLocation attributeId = ResourceLocation.tryParse(configEntry.getKey());
 
-            if (attributeId != null && registry.exists(attributeId)) {
+            if (attributeId != null && registry.exists(attributeId) && configEntry.getValue().isEnabled()) {
 
                 final Attribute attribute = registry.get(attributeId);
 
