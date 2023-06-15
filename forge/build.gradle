@@ -1,21 +1,15 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'net.darkhax.curseforgegradle' version '1.0.11'
+    id 'net.minecraftforge.gradle'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
+    id 'org.spongepowered.mixin'
 }
 
 apply from: '../gradle/patreon.gradle'
 
-archivesBaseName = "${mod_name}-Forge-${minecraft_version}"
+base {
+    archivesName = "${mod_name}-Forge-${minecraft_version}"
+}
 
 minecraft {
 
@@ -37,7 +31,7 @@ minecraft {
             mods {
                 modClientRun {
                     source sourceSets.main
-                    source project(":Common").sourceSets.main
+                    source project(':common').sourceSets.main
                 }
             }
         }
@@ -56,7 +50,7 @@ minecraft {
             mods {
                 modServerRun {
                     source sourceSets.main
-                    source project(":Common").sourceSets.main
+                    source project(':common').sourceSets.main
                 }
             }
         }
@@ -66,18 +60,26 @@ minecraft {
 dependencies {
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly project(":Common")
+    compileOnly project(':common')
     
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
+tasks.withType(JavaCompile).configureEach {
+    source(project(':common').sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).configureEach {
+    source(project(':common').sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(':common').sourceSets.main.allSource)
 }
 
 processResources {
 
-    from project(":Common").sourceSets.main.resources
+    from project(':common').sourceSets.main.resources
 
     def buildProps = project.properties.clone()
 
@@ -145,25 +147,14 @@ if (project.ext.mixin_enabled) {
 
 // -- MAVEN PUBLISHING --
 project.publishing {
-    
+
     publications {
 
         mavenJava(MavenPublication) {
-        
-            artifactId project.archivesBaseName
 
-            // Base mod archive.
-            artifact jar
-            
-            // Adds the sources as an artifact.
-            artifact project.sourcesJar {
-                classifier 'sources'
-            }
-
-            // Adds the javadocs as an artifact.
-            artifact project.javadocJar {
-                classifier 'javadoc'
-            }
+            artifactId = base.archivesName.get()
+            from components.java
+            fg.component(it)
         }
     }
 
@@ -196,6 +187,8 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.changelogType = 'markdown'
     mainFile.changelog = project.ext.mod_changelog
     mainFile.addJavaVersion('Java 17')
+    mainFile.releaseType = 'release'
+    mainFile.addGameVersion('Client', 'Server')
     
     // Append Patreon Supporters
     def patreonInfo = project.findProperty('patreon')
@@ -211,6 +204,24 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
             project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
         }
     }
+}
+
+// Modrinth
+modrinth {
+
+    def patreonInfo = project.findProperty('patreon')
+    def changelogText = project.ext.mod_changelog
+
+    if (patreonInfo) {
+        changelogText += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrlTracked}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+
+    token.set(project.findProperty('modrinth_auth'))
+    projectId.set(modrinth_project)
+    changelog.set(changelogText)
+    versionName.set("${mod_name}-Forge-${minecraft_version}-$version")
+    versionType.set('release')
+    uploadFile.set(tasks.jar)
 }
 
 // Forge's Jar Signer

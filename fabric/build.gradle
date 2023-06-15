@@ -1,20 +1,23 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
-    id 'net.darkhax.curseforgegradle' version '1.0.11'
+    id 'fabric-loom'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
     id 'idea'
 }
 
 apply from: '../gradle/property_helper.gradle'
 apply from: '../gradle/patreon.gradle'
 
-archivesBaseName = "${mod_name}-Fabric-${minecraft_version}"
+base {
+    archivesName = "${mod_name}-Fabric-${minecraft_version}"
+}
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation project(":Common")
+    implementation project(':common')
 }
 
 loom {
@@ -36,7 +39,7 @@ loom {
 
 processResources {
 
-    from project(":Common").sourceSets.main.resources
+    from project(':common').sourceSets.main.resources
 
     def buildProps = project.properties.clone()
 
@@ -63,20 +66,27 @@ processResources {
     }
 }
 
-tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
+tasks.withType(JavaCompile).configureEach {
+    source(project(':common').sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).configureEach {
+    source(project(':common').sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(':common').sourceSets.main.allSource)
 }
 
 // -- MAVEN PUBLISHING --
 project.publishing {
-    
+
     publications {
 
         mavenJava(MavenPublication) {
 
-            artifactId project.archivesBaseName
-
-            from(components["java"])
+            artifactId = base.archivesName.get()
+            from components.java
         }
     }
     
@@ -111,6 +121,8 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addJavaVersion('Java 17')
     mainFile.addModLoader('Fabric')
     mainFile.addModLoader('Quilt')
+    mainFile.releaseType = 'release'
+    mainFile.addGameVersion('Client', 'Server')
 
     // Append Patreon Supporters
     def patreonInfo = project.findProperty('patreon')
@@ -125,5 +137,26 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
         
             project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
         }
+    }
+}
+
+// Modrinth
+modrinth {
+
+    def patreonInfo = project.findProperty('patreon')
+    def changelogText = project.ext.mod_changelog
+
+    if (patreonInfo) {
+        changelogText += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrlTracked}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+
+    token.set(project.findProperty('modrinth_auth'))
+    projectId.set(modrinth_project)
+    changelog = changelogText
+    versionName.set("${mod_name}-Fabric-${minecraft_version}-$version")
+    versionType.set("release")
+    uploadFile.set(tasks.remapJar)
+    dependencies {
+        required.project("fabric-api")
     }
 }
