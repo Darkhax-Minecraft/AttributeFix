@@ -1,5 +1,6 @@
 package net.darkhax.attributefix.config;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import net.darkhax.attributefix.Constants;
@@ -7,6 +8,7 @@ import net.darkhax.attributefix.mixin.AccessorRangedAttribute;
 import net.darkhax.attributefix.temp.RegistryHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 import java.io.File;
@@ -140,6 +142,18 @@ public class AttributeConfig {
         return config;
     }
 
+    /**
+     * Map of Attributes to new default values.<br>
+     * Any attribute not in this map will retain the declared default value, but can still be changed via config.
+     */
+    private static final Map<Attribute, Double> NEW_DEFAULT_VALUES = ImmutableMap.of(
+            Attributes.MAX_HEALTH, 1_000_000D,
+            Attributes.ARMOR, 1_000_000D,
+            Attributes.ARMOR_TOUGHNESS, 1_000_000D,
+            Attributes.ATTACK_DAMAGE, 1_000_000D,
+            Attributes.ATTACK_KNOCKBACK, 1_000_000D
+    );
+
     public static class Entry {
 
         @Expose
@@ -155,7 +169,7 @@ public class AttributeConfig {
 
             this.enabled = "minecraft".equals(id.getNamespace());
             this.min = new DoubleValue(attribute.getMinValue(), attribute.getMinValue());
-            this.max = new DoubleValue(attribute.getMaxValue(), 10_000_000d);
+            this.max = new DoubleValue(attribute.getMaxValue(), NEW_DEFAULT_VALUES.getOrDefault(attribute, attribute.getMaxValue()));
         }
 
         public boolean isEnabled() {
