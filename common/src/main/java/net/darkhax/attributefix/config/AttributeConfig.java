@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import net.darkhax.attributefix.Constants;
 import net.darkhax.attributefix.mixin.AccessorRangedAttribute;
-import net.darkhax.attributefix.temp.RegistryHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,17 +23,16 @@ public class AttributeConfig {
     @Expose
     private Map<String, Entry> attributes = new HashMap<>();
 
-    public void applyChanges(RegistryHelper<Attribute> registry) {
-
+    public void applyChanges() {
 
         Constants.LOG.info("Applying changes for {} attributes.", attributes.size());
         for (Map.Entry<String, Entry> configEntry : attributes.entrySet()) {
 
             final ResourceLocation attributeId = ResourceLocation.tryParse(configEntry.getKey());
 
-            if (attributeId != null && registry.exists(attributeId)) {
+            if (attributeId != null && BuiltInRegistries.ATTRIBUTE.containsKey(attributeId)) {
 
-                final Attribute attribute = registry.get(attributeId);
+                final Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeId);
 
                 if (attribute instanceof RangedAttribute ranged) {
 
@@ -46,7 +45,7 @@ public class AttributeConfig {
                         continue;
                     }
 
-                    final AccessorRangedAttribute accessor = (AccessorRangedAttribute)(Object)attribute;
+                    final AccessorRangedAttribute accessor = (AccessorRangedAttribute) (Object) attribute;
 
                     if (minValue != ranged.getMinValue()) {
 
@@ -64,16 +63,16 @@ public class AttributeConfig {
         }
     }
 
-    public static AttributeConfig load(File configFile, RegistryHelper<Attribute> registry) {
+    public static AttributeConfig load(File configFile) {
 
         final AttributeConfig config = new AttributeConfig();
 
         // Load/Generate the default values.
-        for (Attribute attribute : registry.getValues()) {
+        for (Attribute attribute : BuiltInRegistries.ATTRIBUTE) {
 
             if (attribute instanceof RangedAttribute ranged) {
 
-                final ResourceLocation id = registry.getId(attribute);
+                final ResourceLocation id = BuiltInRegistries.ATTRIBUTE.getKey(attribute);
                 config.attributes.put(id.toString(), new Entry(id, ranged));
             }
         }
@@ -96,7 +95,7 @@ public class AttributeConfig {
                         Constants.LOG.error("Attribute ID '{}' is not a valid. This entry will be ignored.", configEntry.getKey());
                     }
 
-                    else if (!registry.exists(attributeId)) {
+                    else if (!BuiltInRegistries.ATTRIBUTE.containsKey(attributeId)) {
 
                         Constants.LOG.error("Attribute ID '{}' does not belong to a known attribute. This entry will be ignored.", configEntry.getKey());
                     }
@@ -143,8 +142,8 @@ public class AttributeConfig {
     }
 
     /**
-     * Map of Attributes to new default values.<br>
-     * Any attribute not in this map will retain the declared default value, but can still be changed via config.
+     * Map of Attributes to new default values.<br> Any attribute not in this map will retain the declared default
+     * value, but can still be changed via config.
      */
     private static final Map<Attribute, Double> NEW_DEFAULT_VALUES = ImmutableMap.of(
             Attributes.MAX_HEALTH, 1_000_000D,
