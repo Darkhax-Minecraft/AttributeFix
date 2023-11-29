@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,6 @@ public class AttributeConfig {
     private Map<String, Entry> attributes = new HashMap<>();
 
     public void applyChanges(RegistryHelper<Attribute> registry) {
-
 
         Constants.LOG.info("Applying changes for {} attributes.", attributes.size());
         for (Map.Entry<String, Entry> configEntry : attributes.entrySet()) {
@@ -46,7 +44,7 @@ public class AttributeConfig {
                         continue;
                     }
 
-                    final AccessorRangedAttribute accessor = (AccessorRangedAttribute)(Object)attribute;
+                    final AccessorRangedAttribute accessor = (AccessorRangedAttribute) (Object) attribute;
 
                     if (minValue != ranged.getMinValue()) {
 
@@ -84,7 +82,7 @@ public class AttributeConfig {
         if (configFile.exists()) {
 
             try (FileReader reader = new FileReader(configFile)) {
-
+                
                 final Map<String, Entry> configValues = Constants.GSON.fromJson(reader, AttributeConfig.class).attributes;
 
                 for (Map.Entry<String, Entry> configEntry : configValues.entrySet()) {
@@ -113,7 +111,7 @@ public class AttributeConfig {
                 Constants.LOG.info("Loaded {} values from config.", configValues.size());
             }
 
-            catch (IOException e) {
+            catch (Exception e) {
 
                 Constants.LOG.error("Could not read config file {}. Defaults will be used.", configFile.getAbsolutePath());
                 Constants.LOG.trace("Failed to read config file.", e);
@@ -132,7 +130,7 @@ public class AttributeConfig {
             Constants.LOG.info("Saving config file. {} entries.", config.attributes.size());
         }
 
-        catch (IOException e) {
+        catch (Exception e) {
 
             Constants.LOG.error("Could not write config file '{}'!", configFile.getAbsolutePath());
             Constants.LOG.trace("Failed to read config file.", e);
@@ -143,8 +141,8 @@ public class AttributeConfig {
     }
 
     /**
-     * Map of Attributes to new default values.<br>
-     * Any attribute not in this map will retain the declared default value, but can still be changed via config.
+     * Map of Attributes to new default values.<br> Any attribute not in this map will retain the declared default
+     * value, but can still be changed via config.
      */
     private static final Map<Attribute, Double> NEW_DEFAULT_VALUES = ImmutableMap.of(
             Attributes.MAX_HEALTH, 1_000_000D,
