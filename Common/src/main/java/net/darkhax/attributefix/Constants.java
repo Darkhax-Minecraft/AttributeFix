@@ -26,6 +26,11 @@ public class Constants {
         @Override
         public JsonElement serialize(final Double src, final Type typeOfSrc, final JsonSerializationContext context) {
 
+            if (src.isInfinite() || src.isNaN()) {
+
+                return new JsonPrimitive(src);
+            }
+
             BigDecimal value = BigDecimal.valueOf(src);
 
             try {
