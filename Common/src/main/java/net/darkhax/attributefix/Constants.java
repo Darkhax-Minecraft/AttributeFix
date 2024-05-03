@@ -28,6 +28,11 @@ public class Constants {
 
             BigDecimal value = BigDecimal.valueOf(src);
 
+            if (src.isInfinite() || src.isNaN()) {
+
+                return new JsonPrimitive(src);
+            }
+            
             try {
                 value = new BigDecimal(value.toBigIntegerExact());
             }
