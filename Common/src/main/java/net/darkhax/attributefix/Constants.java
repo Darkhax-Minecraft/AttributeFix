@@ -22,25 +22,18 @@ public class Constants {
     public static final DecimalFormat FORMAT = new DecimalFormat("#.##");
 
     private static final class DoubleJsonSerializer implements JsonSerializer<Double> {
-
         @Override
         public JsonElement serialize(final Double src, final Type typeOfSrc, final JsonSerializationContext context) {
-
-            BigDecimal value = BigDecimal.valueOf(src);
-
             if (src.isInfinite() || src.isNaN()) {
-
                 return new JsonPrimitive(src);
             }
-            
+            BigDecimal value = BigDecimal.valueOf(src);
             try {
                 value = new BigDecimal(value.toBigIntegerExact());
             }
-
             catch (ArithmeticException e) {
                 // NO-OP
             }
-
             return new JsonPrimitive(value);
         }
     }
