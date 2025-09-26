@@ -16,6 +16,7 @@ public class AttributeFixMod {
         if (hasInitialized) {
             throw new IllegalStateException("The " + Constants.MOD_NAME + " has already been initialized.");
         }
+        final long startTime = System.nanoTime();
         for (Attribute attribute : BuiltInRegistries.ATTRIBUTE) {
             final ResourceLocation id = BuiltInRegistries.ATTRIBUTE.getKey(attribute);
             if (id != null && attribute instanceof RangedAttribute ranged) {
@@ -24,6 +25,8 @@ public class AttributeFixMod {
                 config.apply();
             }
         }
+        final long endTime = System.nanoTime();
+        Constants.LOG.info("Initialized AttributeFix. Took {}ms.", String.format("%,.2f", (endTime - startTime) / 1000000d));
         hasInitialized = true;
     }
 
