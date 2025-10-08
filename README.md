@@ -19,16 +19,16 @@ repositories {
 
 dependencies {
     // NeoForge
-    implementation group: 'net.darkhax.attributefix', name: 'attributefix-neoforge-1.21.6', version: '21.5.0'
+    implementation group: 'net.darkhax.attributefix', name: 'attributefix-neoforge-1.21.6', version: '21.6.0'
 
     // Forge
-    implementation group: 'net.darkhax.attributefix', name: 'attributefix-forge-1.21.6', version: '21.5.0'
+    implementation group: 'net.darkhax.attributefix', name: 'attributefix-forge-1.21.6', version: '21.6.0'
 
     // Fabric & Quilt
-    modImplementation group: 'net.darkhax.attributefix', name: 'attributefix-fabric-1.21.6', version: '21.5.0'
+    modImplementation group: 'net.darkhax.attributefix', name: 'attributefix-fabric-1.21.6', version: '21.6.0'
 
     // Common / MultiLoader / Vanilla
-    compileOnly group: 'net.darkhax.attributefix', name: 'attributefix-common-1.21.6', version: '21.5.0'
+    compileOnly group: 'net.darkhax.attributefix', name: 'attributefix-common-1.21.6', version: '21.6.0'
 }
 ```
 <!-- maven-end -->
