@@ -10,19 +10,8 @@ pluginManagement {
                 }
             }
             filter {
-                includeGroup('net.fabricmc')
+                includeGroupAndSubgroups('net.fabricmc')
                 includeGroup('fabric-loom')
-            }
-        }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'Forge'
-                    url = uri("https://maven.minecraftforge.net")
-                }
-            }
-            filter {
-                includeGroupAndSubgroups("net.minecraftforge")
             }
         }
         exclusiveContent {
@@ -48,4 +37,3 @@ rootProject.name = 'AttributeFix'
 include('common')
 include('neoforge')
 include('fabric')
-include('forge')
