@@ -4,22 +4,23 @@ import com.google.common.collect.ImmutableMap;
 import net.darkhax.attributefix.common.impl.Constants;
 import net.darkhax.attributefix.common.mixin.AccessorRangedAttribute;
 import net.darkhax.pricklemc.common.api.annotations.Value;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 import java.util.Map;
 
 public class RangeConfig {
 
-    private static final Map<ResourceLocation, Double> NEW_DEFAULT_VALUES = ImmutableMap.of(
-            ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1_000_000D,
-            ResourceLocation.fromNamespaceAndPath("minecraft", "generic.armor"), 1_000_000D,
-            ResourceLocation.fromNamespaceAndPath("minecraft", "generic.armor_toughness"), 1_000_000D,
-            ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1_000_000D,
-            ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_knockback"), 1_000_000D
+    private static final Map<Identifier, Double> NEW_DEFAULT_VALUES = ImmutableMap.of(
+            Identifier.fromNamespaceAndPath("minecraft", "generic.max_health"), 1_000_000D,
+            Identifier.fromNamespaceAndPath("minecraft", "generic.armor"), 1_000_000D,
+            Identifier.fromNamespaceAndPath("minecraft", "generic.armor_toughness"), 1_000_000D,
+            Identifier.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1_000_000D,
+            Identifier.fromNamespaceAndPath("minecraft", "generic.attack_knockback"), 1_000_000D
     );
 
-    private final transient ResourceLocation id;
+    private final transient Identifier id;
     private final transient RangedAttribute attribute;
 
     @Value(comment = "Determines if the range for the attribute should be modified or not.")
@@ -31,7 +32,7 @@ public class RangeConfig {
     @Value(comment = "The highest possible value for the attribute.")
     public double max;
 
-    public RangeConfig(ResourceLocation id, RangedAttribute attribute) {
+    public RangeConfig(Identifier id, RangedAttribute attribute) {
         this.id = id;
         this.attribute = attribute;
         this.modify_range = NEW_DEFAULT_VALUES.containsKey(id);
