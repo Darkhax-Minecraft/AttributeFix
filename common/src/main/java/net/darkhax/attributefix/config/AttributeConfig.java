@@ -96,7 +96,7 @@ public class AttributeConfig {
 
                     else if (!registry.exists(attributeId)) {
 
-                        Constants.LOG.error("Attribute ID '{}' does not belong to a known attribute. This entry will be ignored.", configEntry.getKey());
+                        Constants.LOG.warn("Attribute ID '{}' does not belong to a known attribute. This entry will be ignored.", configEntry.getKey());
                     }
 
                     if (configEntry.getValue().min.value > configEntry.getValue().max.value) {
