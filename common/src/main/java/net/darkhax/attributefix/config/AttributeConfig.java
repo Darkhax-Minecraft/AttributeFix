@@ -34,10 +34,14 @@ public class AttributeConfig {
                 final Attribute attribute = registry.get(attributeId);
 
                 if (attribute instanceof RangedAttribute ranged) {
-
+                    final Entry entry = configEntry.getValue();
                     final double minValue = configEntry.getValue().min.value;
                     final double maxValue = configEntry.getValue().max.value;
 
+                    if (entry.isEnabled()) { // Skip disabled attributes
+                        Constants.LOG.debug("Skipping disabled attribute {}.", attributeId);
+                        continue;
+                    }
                     if (minValue > maxValue) {
 
                         Constants.LOG.error("Attribute {} was configured to have a minimum value higher than it's maximum. This is not permitted!", attributeId);
@@ -172,7 +176,7 @@ public class AttributeConfig {
 
         public boolean isEnabled() {
 
-            return this.isEnabled();
+            return this.enabled;
         }
     }
 
