@@ -38,7 +38,7 @@ public class AttributeConfig {
                     final double minValue = configEntry.getValue().min.value;
                     final double maxValue = configEntry.getValue().max.value;
 
-                    if (!entry.isEnabled()) { // Skip disabled attributes
+                    if (entry.isEnabled()) { // Skip disabled attributes
                         Constants.LOG.debug("Skipping disabled attribute {}.", attributeId);
                         continue;
                     }
