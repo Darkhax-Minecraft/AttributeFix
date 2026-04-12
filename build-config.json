@@ -1,0 +1,41 @@
+{
+  "mod": {
+    "name": "AttributeFix",
+    "group": "net.darkhax.attributefix",
+    "authors": [
+      "Darkhax"
+    ],
+    "id": "attributefix",
+    "license": "LGPL 2.1",
+    "description": "Extends the maximum attribute ranges to allow for higher values.",
+    "repo": "https://github.com/Darkhax-Minecraft/AttributeFix",
+    "client": false
+  },
+  "dependencies": [
+    {
+      "name": "Prickle",
+      "type": "required",
+      "maven": {
+        "common": "net.darkhax.pricklemc:prickle-common-26.1.2:26.1.2.1",
+        "neoforge": "net.darkhax.pricklemc:prickle-neoforge-26.1.2:26.1.2.1",
+        "fabric": "net.darkhax.pricklemc:prickle-fabric-26.1.2:26.1.2.1"
+      },
+      "curseforge": {
+        "slug": "prickle",
+        "id": "1023259"
+      },
+      "modrinth": {
+        "slug": "prickle",
+        "id": "aaRl8GiW"
+      }
+    }
+  ],
+  "curseforge": {
+    "slug": "attributefix",
+    "id": "280510"
+  },
+  "modrinth": {
+    "slug": "attributefix",
+    "id": "lOOpEntO"
+  }
+}
