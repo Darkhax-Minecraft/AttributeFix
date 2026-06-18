@@ -4,9 +4,9 @@ issueTrackerURL = "https://github.com/Darkhax-Minecraft/AttributeFix/issues"
 
 [[mods]]
 modId = "attributefix"
-version = "26.1.2.0"
+version = "26.2.0.0"
 displayName = "AttributeFix"
-updateJSONURL = "https://updates.blamejared.com/get?n=attributefix&gv=26.1.2&ml=neoforge"
+updateJSONURL = "https://updates.blamejared.com/get?n=attributefix&gv=26.2&ml=neoforge"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/attributefix"
 logoFile = "logo_attributefix.png"
 logoBlur = false
@@ -23,14 +23,14 @@ config = "attributefix.neoforge.mixins.json"
 [[dependencies.attributefix]]
 modId = "minecraft"
 type = "required"
-versionRange = "26.1"
+versionRange = "26.2"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.attributefix]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.1.0.1-beta,)"
+versionRange = "[26.2.0.1-beta,)"
 ordering = "NONE"
 side = "BOTH"
 
