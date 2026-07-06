@@ -10,7 +10,7 @@ updateJSONURL = "https://updates.blamejared.com/get?n=attributefix&gv=26.1.2&ml=
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/attributefix"
 logoFile = "logo_attributefix.png"
 logoBlur = false
-credits = "This project is made possible with Patreon support from players like you. Thank you! lothrazar, techsquirrel, Keyana , Darkosto, Tobias Ward, noobanidus"
+credits = "This project is made possible with Patreon support from players like you. Thank you! lothrazar, techsquirrel, Tobias Ward, noobanidus"
 authors = "Darkhax"
 description = "Extends the maximum attribute ranges to allow for higher values."
 

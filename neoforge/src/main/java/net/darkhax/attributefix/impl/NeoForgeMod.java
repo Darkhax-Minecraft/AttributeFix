@@ -12,6 +12,7 @@ public class NeoForgeMod {
 
     @SubscribeEvent
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
-        AttributeFixMod.getInstance().init();
+        AttributeFixMod.LOG.info("Initializing {} on NeoForge.", AttributeFixMod.MOD_NAME);
+        AttributeFixMod.applyInternalChanges();
     }
 }

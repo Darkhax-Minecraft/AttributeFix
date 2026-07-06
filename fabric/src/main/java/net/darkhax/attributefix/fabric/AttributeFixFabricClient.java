@@ -8,6 +8,9 @@ public class AttributeFixFabricClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(mc -> AttributeFixMod.getInstance().init());
+        ClientLifecycleEvents.CLIENT_STARTED.register(mc -> {
+            AttributeFixMod.LOG.info("Initializing {} on the client.", AttributeFixMod.MOD_NAME);
+            AttributeFixMod.applyInternalChanges();
+        });
     }
 }

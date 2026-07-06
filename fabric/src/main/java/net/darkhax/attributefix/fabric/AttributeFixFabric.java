@@ -10,7 +10,8 @@ public class AttributeFixFabric implements ModInitializer {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             if (server.isDedicatedServer()) {
-                AttributeFixMod.getInstance().init();
+                AttributeFixMod.LOG.info("Initializing {} on a dedicated server.", AttributeFixMod.MOD_NAME);
+                AttributeFixMod.applyInternalChanges();
             }
         });
     }
